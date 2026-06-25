@@ -75,7 +75,7 @@ export default function Login() {
           <form onSubmit={onSubmit} className="mt-10 space-y-5" data-testid="login-form">
             <div>
               <label htmlFor="username" className="block text-sm font-semibold text-slate-700 mb-2">
-                University Roll Number
+                Roll No.
               </label>
               <div className="relative">
                 <User className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -85,7 +85,7 @@ export default function Login() {
                   type="text"
                   required
                   className="psit-input pl-9"
-                  placeholder="e.g. 2401640310003"
+                  placeholder="e.g. 2201640310000"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   disabled={loading}
@@ -142,9 +142,7 @@ export default function Login() {
               )}
             </button>
 
-            <p className="text-xs text-slate-500 text-center pt-2">
-              We never store your ERP password in plain text. Sessions are cached securely for 24 hours.
-            </p>
+            
           </form>
         </div>
       </div>
