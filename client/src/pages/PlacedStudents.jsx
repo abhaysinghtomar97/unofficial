@@ -13,6 +13,8 @@ const BRANCHES = [
   { value: 'CS-CYS', label: 'CS-CYS' },
   { value: 'IT', label: 'IT' },
   { value: 'ME', label: 'ME – Mechanical' },
+  { value: 'BCA', label: 'BCA' },
+  { value: 'BBA', label: 'BBA' },
   { value: 'MBA', label: 'MBA' },
   { value: 'MCA', label: 'MCA' },
 ];

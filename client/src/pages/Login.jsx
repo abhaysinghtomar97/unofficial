@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import toast , { Toaster } from 'react-hot-toast'
+import toast, { Toaster } from 'react-hot-toast'
 import { Loader2, GraduationCap, Lock, User, AlertCircle } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 
@@ -9,47 +9,48 @@ export default function Login() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [college, setCollege] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   if (user) return <Navigate to="/dashboard" replace />;
 
- const onSubmit = async (e) => {
-  e.preventDefault();
+  const onSubmit = async (e) => {
+    e.preventDefault();
 
-  setError("");
-  setLoading(true);
+    setError("");
+    setLoading(true);
 
-  try {
-    const res = await login(username.trim(), password);
+    try {
+      const res = await login(username.trim(), password, college);
 
-  
 
-    if (res.ok) {
-      navigate("/dashboard");
-    } else {
-      toast.error(res.message || "Login failed");
+
+      if (res.ok) {
+        navigate("/dashboard");
+      } else {
+        toast.error(res.message || "Login failed");
+      }
+    } catch (err) {
+      console.error("Login Error:", err);
+
+      toast.error(
+        err.response?.data?.message ||
+        err.message ||
+        "Something went wrong. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    console.error("Login Error:", err);
-
-    toast.error(
-      err.response?.data?.message ||
-      err.message ||
-      "Something went wrong. Please try again."
-    );
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <div className="min-h-screen w-full grid lg:grid-cols-2 bg-white">
       {/* ---- Left: form ---- */}
       <Toaster
-  position="top-center"
-  reverseOrder={false}
-/>
+        position="top-center"
+        reverseOrder={false}
+      />
       <div className="flex items-center justify-center px-6 py-12 lg:px-16">
         <div className="w-full max-w-md" data-testid="login-card">
           <div className="flex items-center gap-2 mb-10">
@@ -113,6 +114,25 @@ export default function Login() {
                   autoComplete="current-password"
                 />
               </div>
+              <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-2">
+                Choose College
+              </label>
+              <div className="relative">
+                <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <select
+                  id="college"
+                  data-testid="login-college-select"
+                  required
+                  className="psit-input pl-9"
+                  value={college}
+                  onChange={(e) => setCollege(e.target.value)}
+                  disabled={loading}
+                >
+                  <option value="" disabled>Choose College</option>
+                  <option value="PSIT">PSIT</option>
+                  <option value="PSIT-CHE">PSIT-CHE</option>
+                </select>
+              </div>
             </div>
 
             {error && (
@@ -142,7 +162,7 @@ export default function Login() {
               )}
             </button>
 
-            
+
           </form>
         </div>
       </div>

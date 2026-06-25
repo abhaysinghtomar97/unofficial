@@ -20,8 +20,8 @@ export function AuthProvider({ children }) {
     return () => { cancelled = true; };
   }, []);
 
-  const login = async (username, password) => {
-    const { data } = await api.post('/auth/login', { username, password });
+  const login = async (username, password, college) => {
+    const { data } = await api.post('/auth/login', { username, password, college });
     console.log("auth data:" ,data)
     if (data?.success) {
       localStorage.setItem('psit_token', data.token);

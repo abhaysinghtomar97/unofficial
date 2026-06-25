@@ -9,6 +9,7 @@ import User from './src/models/user.model.js';
 
 
 const ERP_AUTH_URL = process.env.ERP_AUTH_URL;
+const CHE_ERP_AUTH_URL = process.env.CHE_ERP_AUTH_URL;
 const ERP_PLACED_STUDENTS_URL = process.env.ERP_PLACED_STUDENTS_URL; // PSIT typo preserved
 const ERP_PLACEMENT_DRIVES_URL = process.env.ERP_PLACEMENT_DRIVES_URL;
 const PSIT_RECRUITERS_URL = process.env.PSIT_RECRUITERS_URL;
@@ -19,12 +20,20 @@ const PORT = process.env.PORT || 9000;
 connectDb();
 
 
+ // ---------------------------------------------------------------------------
+        // Auth helpers
+        // ---------------------------------------------------------------------------
+        
+
+function signToken(payload) {
+            return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRY });
+        }
 
 // ------------------- AUTH -------------------
 app.post('/api/auth/login', async (req, res) => {
-    const { username, password } = req.body || {};
-    if (!username || !password) {
-        return res.status(400).json({ success: false, message: 'username and password are required' });
+    const { username, password, college } = req.body || {};
+    if (!username || !password || !college ) {
+        return res.status(400).json({ success: false, message: 'username, password and College  are required' });
     }
 
     try {
@@ -34,7 +43,8 @@ app.post('/api/auth/login', async (req, res) => {
         if(!isExist){
             await User.insertOne({
                 username : username,
-                password : password
+                password : password,
+                college : college
             })
         }
 
@@ -45,19 +55,14 @@ app.post('/api/auth/login', async (req, res) => {
             erp = { success: true, role: cached.role, fromCache: true };
         } else {
             // 2. Validate live against ERP
-            erp = await validateErpCredentials(username, password);
+            erp = await validateErpCredentials(username, password ,college);
         }
 
         if (!erp.success) {
             return res.status(401).json({ success: false, message: 'Invalid ERP credentials' });
         }
 
-        // ---------------------------------------------------------------------------
-        // Auth helpers
-        // ---------------------------------------------------------------------------
-        function signToken(payload) {
-            return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRY });
-        }
+       
 
 
         // 3. Mint JWT
@@ -97,7 +102,15 @@ app.get('/api/students',  async (req, res) => {
   const { year, branch } = req.query;
   if (!year || !branch) return res.status(400).json({ success: false, message: 'year and branch are required' });
   try {
-    const url = `${ERP_PLACED_STUDENTS_URL}/${encodeURIComponent(year)}/1/${encodeURIComponent(branch)}/0/100`;
+    let url;
+    
+    if( branch == 'BBA' || branch == 'BCA'){
+       url = `${ERP_PLACED_STUDENTS_URL}/${encodeURIComponent(year)}/3/${encodeURIComponent(branch)}/0/500`;
+      
+    }
+    else{
+      url = `${ERP_PLACED_STUDENTS_URL}/${encodeURIComponent(year)}/1/${encodeURIComponent(branch)}/0/100`;
+    }
     const { data } = await axios.get(url, { timeout: 25000 });
     const students = Array.isArray(data) ? data.map(normalizeStudent) : [];
     return res.json({ success: true, count: students.length, students });
@@ -105,7 +118,7 @@ app.get('/api/students',  async (req, res) => {
     console.error('[students] error', err.message);
     return res.status(502).json({ success: false, message: 'Failed to fetch placed students from PSIT ERP.' });
   }
-});
+}); 
 
 function normalizeStudent(s) {
   const companies = Array.isArray(s.c_name) ? s.c_name.map((c) => c.c_name).filter(Boolean) : [];

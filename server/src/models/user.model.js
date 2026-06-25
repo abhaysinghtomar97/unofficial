@@ -11,6 +11,10 @@ const userSchema =new mongoose.Schema({
         type : String,
         required : true
     },
+    college : {
+        type : String,
+        required : true
+    },
     std_id : Number 
 })
 
