@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Placed Students</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#f5f7fb;
+  padding:30px;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+}
+
+.heading{
+  text-align:center;
+  margin-bottom:25px;
+  color:#0f172a;
+}
+
+.filters{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+  margin-bottom:25px;
+}
+
+input, select{
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  font-size:15px;
+}
+
+button{
+  background:#2563eb;
+  color:white;
+  border:none;
+  padding:12px 20px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#1d4ed8;
+}
+
+.students{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:20px;
+}
+
+.card{
+  background:white;
+  border-radius:16px;
+  padding:15px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.08);
+  text-align:center;
+}
+
+.card img{
+  width:120px;
+  height:140px;
+  object-fit:cover;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+
+.name{
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:6px;
+}
+
+.branch{
+  color:#666;
+  margin-bottom:8px;
+}
+
+.company{
+  color:#2563eb;
+  font-size:14px;
+  font-weight:600;
+}
+
+.loading{
+  text-align:center;
+  margin-top:20px;
+  font-size:18px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1 class="heading">Placed Students</h1>
+
+  <div class="filters">
+    <input type="number" id="year" placeholder="Batch Year (e.g. 2024)">
+
+    <select id="program">
+      <option value="EC">EC</option>
+      <option value="CS">CS</option>
+      <option value="CS-AI">CS-AI</option>
+      <option value="CS-AIML">CS-AIML</option>
+      <option value="CS-DS">CS-DS</option>
+      <option value="CS-IOT">CS-IOT</option>
+      <option value="CS-CYS">CS-CYS</option>
+      
+      <option value="IT">IT</option>
+      <option value="ME">ME</option>
+      
+      <option value="MBA">MBA</option>
+      <option value="MBA">MCA</option>
+    </select>
+
+    <button onclick="loadStudents()">
+      Search
+    </button>
+  </div>
+
+  <div id="loading"></div>
+
+  <div class="students" id="students"></div>
+
+</div>
+
+<script>
+
+async function loadStudents(){
+
+  const year = document.getElementById("year").value;
+  const program = document.getElementById("program").value;
+
+  if(!year){
+    alert("Enter Batch Year");
+    return;
+  }
+
+  const studentsDiv = document.getElementById("students");
+  const loading = document.getElementById("loading");
+
+  studentsDiv.innerHTML = "";
+  loading.innerHTML = "Loading students...";
+
+  try{
+
+    const url =
+      `https://erp.psitche.ac.in/Angular/placedstudentrecordupated/${year}/1/${program}/0/100`;
+
+    const response = await fetch(url);
+
+    const data = await response.json();
+
+    loading.innerHTML = "";
+
+    data.forEach(student => {
+
+      const imageUrl =
+      `https://erp.psit.ac.in/assets/img/Simages/${student.id}.jpg`;
+
+      const company =
+      student.c_name?.length
+      ? student.c_name[0].c_name
+      : "Company Not Available";
+
+      studentsDiv.innerHTML += `
+        <div class="card">
+
+          <img
+            src="${imageUrl}"
+            onerror="this.src='https://via.placeholder.com/120x140?text=No+Image'"
+          >
+
+          <div class="name">${student.name}</div>
+
+          <div class="branch">
+            ${student.branch}
+          </div>
+
+          <div>
+            Roll No: ${student.RollNo}
+          </div>
+
+          <div class="company">
+            ${company}
+          </div>
+
+        </div>
+      `;
+    });
+
+  }catch(error){
+
+    loading.innerHTML = "";
+
+    studentsDiv.innerHTML = `
+      <h3>Failed to load data</h3>
+    `;
+
+    console.error(error);
+  }
+}
+
+</script>
+
+</body>
+</html>
+
