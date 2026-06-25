@@ -33,14 +33,6 @@ export default async function validateErpCredentials(username, password) {
         };
     }
 
-    console.log("========== ERP LOGIN RESPONSE ==========");
-    console.log("Status:", response.status);
-    console.log("Location:", response.headers.location);
-    console.log("Cookies:", response.headers["set-cookie"]);
-    console.log("Body:", typeof response.data === "string"
-        ? response.data.substring(0, 500)
-        : response.data);
-    console.log("========================================");
 
     const location = response.headers?.location || "";
     const setCookie = response.headers?.["set-cookie"] || [];
@@ -66,12 +58,7 @@ export default async function validateErpCredentials(username, password) {
 
     const success = role !== "unknown";
 
-    if (success) {
-        console.log(`✅ ERP Login Successful (${role})`);
-    } else {
-        console.log("❌ ERP Login Failed");
-    }
-
+   
     return {
         success,
         role,

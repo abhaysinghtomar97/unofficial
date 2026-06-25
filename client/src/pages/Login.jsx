@@ -23,7 +23,7 @@ export default function Login() {
   try {
     const res = await login(username.trim(), password);
 
-    console.log("Login response:", res);
+  
 
     if (res.ok) {
       navigate("/dashboard");

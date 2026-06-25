@@ -8,7 +8,7 @@ export function AuthProvider({ children }) {
     try { return JSON.parse(localStorage.getItem('psit_user')) || null; } catch { return null; }
   });
   const [bootstrapped, setBootstrapped] = useState(false);
-  console.log("user: ", user)
+  
   useEffect(() => {
     let cancelled = false;
     const token = localStorage.getItem('psit_token');
