@@ -59,7 +59,7 @@ export default function DashboardLayout() {
         </div>
 
         <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto no-scrollbar">
-          <div className="psit-overline px-3 mb-2">Menu</div>
+          <div className="psit-overline px-3 mb-2 mt-10 md:mt-0">Menu</div>
           {navLinks.map((l) => (
             <NavLink
               key={l.to}
@@ -68,7 +68,7 @@ export default function DashboardLayout() {
               data-testid={l.testid}
               onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors
+                `flex items-center gap-3 px-3 py-2.5  rounded-md text-sm font-medium transition-colors
                  ${isActive
                   ? 'bg-slate-900 text-white'
                   : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}`
