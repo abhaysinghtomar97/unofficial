@@ -14,7 +14,7 @@ const ERP_PLACEMENT_DRIVES_URL = process.env.ERP_PLACEMENT_DRIVES_URL;
 const PSIT_RECRUITERS_URL = process.env.PSIT_RECRUITERS_URL;
 const JWT_SECRET=process.env.JWT_SECRET;
 const JWT_EXPIRY = process.env.JWT_EXPIRY;
- 
+const PORT = process.env.PORT || 9000;
 
 connectDb();
 
@@ -216,7 +216,7 @@ app.use('/api', (_req, res) => res.status(404).json({ success: false, message: '
 
 
 
-app.listen(9000, () => {
-    console.log('Server is running at port 9000')
-})
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
 
