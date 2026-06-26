@@ -91,7 +91,7 @@ export default function PlacedStudents() {
 
   return (
     <div className="space-y-6" data-testid="students-page">
-      {/* <StudentProfileCard />  */}
+      <StudentProfileCard /> 
       <div>
         <div className="psit-overline">Placements</div>
         <h1 className="mt-1 text-3xl sm:text-4xl font-bold text-slate-900" style={{ fontFamily: 'Cabinet Grotesk' }}>

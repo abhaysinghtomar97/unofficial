@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-const BACKEND_URL ='https://unofficial-6hpn.onrender.com';
+const BACKEND_URL ='http://localhost:9000' ;
 export const API = `${BACKEND_URL}/api`;
 
 const api = axios.create({ baseURL: API, timeout: 30000 });

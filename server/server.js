@@ -55,7 +55,6 @@ app.post('/api/auth/login', async (req, res) => {
     upsert: true,
   }
 );
-console.log(user)
 
 
         let erp;
