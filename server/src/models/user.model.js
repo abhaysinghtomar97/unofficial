@@ -15,6 +15,12 @@ const userSchema =new mongoose.Schema({
         type : String,
         required : true
     },
+    
+    loginCount: {
+        type: Number,
+        default: 1
+    },
+    lastLogin: Date,
     std_id : Number 
 })
 

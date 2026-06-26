@@ -23,9 +23,7 @@ export default function Login() {
 
     try {
       const res = await login(username.trim(), password, college);
-
-
-
+      console.log(res)
       if (res.ok) {
         navigate("/dashboard");
       } else {

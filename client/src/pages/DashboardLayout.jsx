@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
 import { LayoutDashboard, Users, Building2, GraduationCap, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '../lib/auth';
+import StudentProfileCard from '../components/StudentProfileCard';
 
 const navLinks = [
   { to: '/dashboard', label: 'Overview', icon: LayoutDashboard, testid: 'nav-overview' },
@@ -98,6 +99,7 @@ export default function DashboardLayout() {
           </button>
         </div>
       </aside>
+
 
       {/* Backdrop for mobile */}
       {mobileOpen && (

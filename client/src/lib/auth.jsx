@@ -21,6 +21,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (username, password, college) => {
+    console.log("in")
     const { data } = await api.post('/auth/login', { username, password, college });
     console.log("auth data:" ,data)
     if (data?.success) {

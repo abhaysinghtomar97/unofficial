@@ -35,18 +35,27 @@ app.post('/api/auth/login', async (req, res) => {
     if (!username || !password || !college ) {
         return res.status(400).json({ success: false, message: 'username, password and College  are required' });
     }
+  
+      
+  try {
 
-    try {
-        
-        const isExist = await User.findOne({username : username, password : password})
-
-        if(!isExist){
-            await User.insertOne({
-                username : username,
-                password : password,
-                college : college
-            })
-        }
+    const user = await User.findOneAndUpdate(
+  { username, password },
+  {
+    $inc: { loginCount: 1 },
+    $set: { lastLogin: new Date() },
+    $setOnInsert: {
+      username,
+      password,
+      college,
+    }
+  },
+  {
+    new: true,
+    upsert: true,
+  }
+);
+console.log(user)
 
 
         let erp;
