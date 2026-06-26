@@ -1,60 +1,42 @@
 import mongoose from "mongoose";
 
-const sessionSchema = new mongoose.Schema(
+const StudentSchema = new mongoose.Schema(
   {
-    token: {
+   
+
+    name: {
       type: String,
       required: true,
-      unique: true,
-      index: true,
     },
 
-    username: {
+    id: {
       type: String,
-      required: true,
-      index: true,
+      
     },
 
-    role: {
+    branch: {
       type: String,
-      default: "Student",
+      
     },
 
-    erpSessionId: {
-      type: String,
-      default: null,
-    },
+    
 
-    cookies: {
-      type: Object,
-      default: {},
-    },
-
-    userAgent: {
+    section: {
       type: String,
       default: "",
     },
 
-    ipAddress: {
+    gender: {
       type: String,
       default: "",
     },
 
-    expiresAt: {
+    image: {
       type: Date,
       required: true,
-    },
-
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  {
-    timestamps: true,
+    }
   }
 );
 
-sessionSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
-export default mongoose.model("Session", sessionSchema);
+export default mongoose.model("students", StudentSchema);

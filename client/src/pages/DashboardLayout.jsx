@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-
+import { UserCircle2 } from "lucide-react";
 import { LayoutDashboard, Users, Building2, GraduationCap, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 import StudentProfileCard from '../components/StudentProfileCard';
@@ -15,6 +15,16 @@ export default function DashboardLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+
+
+  const profileImage =
+    user?.profileImage ||
+    (user?.studentId
+      ? user.college === "PSIT"
+        ? `https://erp.psit.ac.in/assets/img/Simages/${user.studentId}.jpg`
+        : `https://erp.psitche.ac.in/assets/img/Simages/${user.studentId}.jpg`
+      : null);
 
   const onLogout = async () => {
     await logout();
@@ -80,6 +90,72 @@ export default function DashboardLayout() {
             </NavLink>
           ))}
         </nav>
+
+
+
+
+
+        <div className="px-3 pt-5 pb-2 border-b">
+
+          <button
+            onClick={() => setProfileOpen(true)}
+            className="w-full flex items-center gap-3 rounded-xl p-3 hover:bg-slate-100 transition"
+          >
+            {profileImage ? (
+              <img
+                src={profileImage}
+                alt={user?.name}
+                className="w-11 h-11 rounded-full object-cover border-2 border-slate-200"
+                onError={(e) => {
+                  e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                    user?.name || user?.username
+                  )}&background=2563eb&color=fff`;
+                }}
+              />
+            ) : (
+              <div className="w-11 h-11 rounded-full bg-slate-100 flex items-center justify-center">
+                <UserCircle2 className="w-7 h-7 text-slate-500" />
+              </div>
+            )}
+
+            <div className="flex-1 text-left">
+              <h3 className="font-semibold text-slate-800">
+                {user?.name || "Complete Profile"}
+              </h3>
+
+              <p className="text-xs text-slate-500">
+                {user?.studentId || "Click to verify"}
+              </p>
+            </div>
+
+            {!user?.studentId && (
+              <span className="px-2 py-1 text-[10px] rounded-full bg-orange-100 text-orange-600 font-medium">
+                NEW
+              </span>
+            )}
+          </button>
+
+        </div>
+
+        
+        {profileOpen && (
+          <div className="fixed inset-0 bg-black/40 z-50 min-w-lvw  flex items-center justify-center">
+
+            <div className="bg-white rounded-2xl  p-6 relative">
+
+              <button
+                onClick={() => setProfileOpen(false)}
+                className="absolute top-4 right-4 text-2xl"
+              >
+                ×
+              </button>
+
+              <StudentProfileCard />
+
+            </div>
+
+          </div>
+        )}
 
         <div className="border-t border-slate-200 p-3">
           <div className="px-3 py-2 mb-2">

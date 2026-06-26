@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 
-
-
 const userSchema =new mongoose.Schema({
     username: {
         type: Number,
@@ -21,7 +19,10 @@ const userSchema =new mongoose.Schema({
         default: 1
     },
     lastLogin: Date,
-    std_id : Number 
+    studentId : Number,
+    name : String,
+    profileImage : String,
+    needProfileSetup:Boolean
 })
 
 

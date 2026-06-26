@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-
 import { Search, FolderSearch, Loader2 } from 'lucide-react';
 import api from '../lib/api';
-import StudentProfileCard from '../components/StudentProfileCard';
 
 const BRANCHES = [
   { value: 'EC', label: 'EC – Electronics & Comm.' },
@@ -91,7 +89,7 @@ export default function PlacedStudents() {
 
   return (
     <div className="space-y-6" data-testid="students-page">
-      <StudentProfileCard /> 
+     
       <div>
         <div className="psit-overline">Placements</div>
         <h1 className="mt-1 text-3xl sm:text-4xl font-bold text-slate-900" style={{ fontFamily: 'Cabinet Grotesk' }}>
