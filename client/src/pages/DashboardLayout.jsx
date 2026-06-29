@@ -120,11 +120,11 @@ export default function DashboardLayout() {
 
             <div className="flex-1 text-left">
               <h3 className="font-semibold text-slate-800">
-                {user?.name || "Complete Profile"}
+                {user?.name || "See Profile"}
               </h3>
 
               <p className="text-xs text-slate-500">
-                {user?.studentId || "Click to verify"}
+                {user?.studentId || "Click to open"}
               </p>
             </div>
 

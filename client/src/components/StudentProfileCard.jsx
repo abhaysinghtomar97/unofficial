@@ -129,7 +129,7 @@ export default function StudentProfileCard() {
         <div className="text-5xl">🎓</div>
 
         <h2 className="text-xl font-bold mt-3">
-          Complete Your Student Profile
+          See Your Student Profile
         </h2>
 
         <p className="text-gray-500 text-sm mt-2">
